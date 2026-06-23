@@ -1,18 +1,64 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export function CTA() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      /* CTA card: scale from 0.9 → 1 with blur to sharp */
+      const ctaCard = sectionRef.current?.querySelector("[data-cta-card]");
+      if (ctaCard) {
+        gsap.from(ctaCard, {
+          scrollTrigger: {
+            trigger: ctaCard,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          scale: 0.92,
+          opacity: 0,
+          filter: "blur(8px)",
+          y: 30,
+          duration: 0.9,
+          ease: "power3.out",
+          clearProps: "filter",
+        });
+      }
+
+      /* Animated blob positions */
+      const blobs = sectionRef.current?.querySelectorAll("[data-cta-blob]");
+      if (blobs?.length) {
+        blobs.forEach((blob, i) => {
+          gsap.to(blob, {
+            x: i % 2 === 0 ? 20 : -20,
+            y: i % 2 === 0 ? -15 : 15,
+            duration: 6 + i * 2,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+          });
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="contact" className="py-24 md:py-32">
+    <section ref={sectionRef} id="contact" className="py-24 md:py-32">
       <div className="container-x">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+        <div
+          data-cta-card
           className="relative overflow-hidden rounded-[2rem] bg-lime p-10 text-lime-foreground md:p-20"
         >
-          <div className="absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-black/10 blur-3xl" />
+          <div data-cta-blob className="absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-black/10 blur-3xl" />
+          <div data-cta-blob className="absolute -left-10 -top-10 h-60 w-60 rounded-full bg-white/15 blur-3xl" />
           <div className="relative">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] opacity-70">Let&apos;s talk</span>
             <h2 className="mt-4 font-display text-5xl font-semibold leading-[1] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl text-balance">
@@ -32,7 +78,7 @@ export function CTA() {
               </a>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -49,7 +95,7 @@ export function Footer() {
     <footer className="border-t border-white/10 bg-surface/40 pt-20 pb-10">
       <div className="container-x">
         <div className="grid gap-12 md:grid-cols-[1.4fr_2fr]">
-          <div>
+          <div data-footer-col>
             <div className="flex items-center gap-2">
               <span className="grid h-10 w-10 place-items-center rounded-full bg-lime text-lime-foreground font-display text-lg font-bold">J</span>
               <span className="font-display text-2xl font-semibold tracking-tight">John<span className="text-lime">.</span></span>
@@ -61,11 +107,11 @@ export function Footer() {
           </div>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             {cols.map((c) => (
-              <div key={c.title}>
+              <div key={c.title} data-footer-col>
                 <h4 className="font-display text-sm font-semibold uppercase tracking-widest text-muted-foreground">{c.title}</h4>
                 <ul className="mt-4 space-y-3">
                   {c.links.map((l) => (
-                    <li key={l}><a href="#" className="text-sm hover:text-lime">{l}</a></li>
+                    <li key={l}><a href="#" className="text-sm transition-colors hover:text-lime">{l}</a></li>
                   ))}
                 </ul>
               </div>
@@ -78,7 +124,7 @@ export function Footer() {
           <p>New York · Lisbon · Singapore</p>
         </div>
 
-        <div aria-hidden className="pointer-events-none mt-10 select-none overflow-hidden">
+        <div aria-hidden className="pointer-events-none mt-10 select-none overflow-hidden" data-footer-watermark>
           <div className="font-display text-[20vw] font-bold leading-[0.85] tracking-tighter text-foreground/[0.04]">
             JOHN STUDIO
           </div>

@@ -1,8 +1,13 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import { ArrowUpRight, Star } from "lucide-react";
 import Image from "next/image";
+import { Particles } from "@/components/ui/particles";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { NumberTicker } from "@/components/ui/number-ticker";
+import { TextScramble } from "@/components/site/TextScramble";
 
 const heroVisual = {
   image:
@@ -11,48 +16,117 @@ const heroVisual = {
 };
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      /* Blur-to-sharp loading sequence (Dimaac-style) */
+      const blurElements = sectionRef.current?.querySelectorAll("[data-blur-in]");
+      if (blurElements?.length) {
+        gsap.fromTo(
+          blurElements,
+          { filter: "blur(12px)", opacity: 0, y: 20 },
+          {
+            filter: "blur(0px)",
+            opacity: 1,
+            y: 0,
+            stagger: 0.12,
+            duration: 0.9,
+            ease: "power2.out",
+            delay: 0.2,
+          }
+        );
+      }
+
+      /* Stats grid entrance */
+      const statCells = sectionRef.current?.querySelectorAll("[data-stat-cell]");
+      if (statCells?.length) {
+        gsap.from(statCells, {
+          opacity: 0,
+          y: 30,
+          stagger: 0.08,
+          duration: 0.6,
+          ease: "power2.out",
+          delay: 0.8,
+        });
+      }
+
+      /* Hero image scale-in */
+      const heroImg = sectionRef.current?.querySelector("[data-hero-img]");
+      if (heroImg) {
+        gsap.from(heroImg, {
+          scale: 1.1,
+          opacity: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          delay: 0.6,
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="top" className="relative overflow-hidden pt-36 pb-24 md:pt-44 md:pb-32">
-      <div className="absolute inset-0 grid-bg [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
-      <div className="absolute inset-0 radial-glow" />
-      <div className="container-x relative">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface/60 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur"
-        >
+    <section ref={sectionRef} id="top" className="relative overflow-hidden pt-36 pb-24 md:pt-44 md:pb-32">
+      {/* Particles background */}
+      <Particles
+        className="absolute inset-0 z-0"
+        quantity={80}
+        ease={80}
+        color="#d4ff00"
+        size={0.4}
+      />
+      <div className="absolute inset-0 grid-bg [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)] z-[1]" />
+      <div className="absolute inset-0 radial-glow z-[1]" />
+
+      <div className="container-x relative z-[2]" data-hero-content>
+        {/* Badge with BorderBeam */}
+        <div data-blur-in className="relative inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface/60 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur">
           <span className="h-1.5 w-1.5 rounded-full bg-lime animate-pulse" />
           Now booking Q3 2026 — 2 slots open
-        </motion.div>
+          <BorderBeam
+            size={50}
+            duration={8}
+            colorFrom="#d4ff00"
+            colorTo="#8aff00"
+            borderWidth={1}
+          />
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.05 }}
-          className="mt-6 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-balance sm:text-6xl md:text-7xl lg:text-[88px]"
-        >
-          Software, web & mobile
+        {/* Headline with Text Scramble */}
+        <h1 data-blur-in className="mt-6 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-balance sm:text-6xl md:text-7xl lg:text-[88px]">
+          <TextScramble
+            text="Software, web & mobile"
+            speed={25}
+            delay={400}
+          />
           <br />
-          built for <span className="italic text-lime">ambitious</span> brands.
-        </motion.h1>
+          <TextScramble
+            text="built for "
+            speed={25}
+            delay={700}
+          />
+          <span className="italic text-lime">
+            <TextScramble
+              text="ambitious"
+              speed={30}
+              delay={900}
+            />
+          </span>
+          <TextScramble
+            text=" brands."
+            speed={25}
+            delay={1000}
+          />
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="mt-7 max-w-2xl text-lg text-muted-foreground md:text-xl"
-        >
+        <p data-blur-in className="mt-7 max-w-2xl text-lg text-muted-foreground md:text-xl">
           We&apos;re John — a product studio of designers and engineers shipping high-craft digital
           products for venture-backed startups and global brands.
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          className="mt-10 flex flex-wrap items-center gap-4"
-        >
+        <div data-blur-in className="mt-10 flex flex-wrap items-center gap-4">
           <a
             href="#contact"
             className="group inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3.5 text-sm font-semibold text-lime-foreground transition-transform hover:scale-[1.03]"
@@ -74,31 +148,34 @@ export function Hero() {
             </div>
             4.9 — 120+ launches
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-20 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]"
-        >
+        <div data-hero-visual className="mt-20 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+          {/* Stats with NumberTicker */}
           <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10 sm:grid-cols-4 lg:self-end">
             {[
-              ["12+", "Years shipping"],
-              ["320", "Products launched"],
-              ["48", "Countries served"],
-              ["$1.4B", "Client funding raised"],
-            ].map(([k, v]) => (
-              <div key={v} className="bg-background p-6 md:p-8">
+              { value: 12, suffix: "+", label: "Years shipping" },
+              { value: 320, suffix: "", label: "Products launched" },
+              { value: 48, suffix: "", label: "Countries served" },
+              { value: 1.4, suffix: "B", prefix: "$", label: "Client funding raised", decimals: 1 },
+            ].map((stat) => (
+              <div key={stat.label} data-stat-cell className="bg-background p-6 md:p-8">
                 <div className="font-display text-4xl font-semibold tracking-tight md:text-5xl">
-                  {k}
+                  {stat.prefix || ""}
+                  <NumberTicker
+                    value={stat.value}
+                    className="text-foreground"
+                    decimalPlaces={stat.decimals || 0}
+                    delay={0.5}
+                  />
+                  {stat.suffix}
                 </div>
-                <div className="mt-2 text-sm text-muted-foreground">{v}</div>
+                <div className="mt-2 text-sm text-muted-foreground">{stat.label}</div>
               </div>
             ))}
           </div>
 
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-surface/70 shadow-2xl shadow-lime/5">
+          <div data-hero-img className="relative overflow-hidden rounded-3xl border border-white/10 bg-surface/70 shadow-2xl shadow-lime/5">
             <Image
               src={heroVisual.image}
               alt={heroVisual.alt}
@@ -122,7 +199,7 @@ export function Hero() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

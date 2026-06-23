@@ -1,8 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const work = [
   {
@@ -36,13 +40,59 @@ const work = [
 ];
 
 export function Work() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      /* Work cards: scale from 0.85→1 + fade + slight rotation */
+      const cards = sectionRef.current?.querySelectorAll("[data-work-card]");
+      if (cards?.length) {
+        cards.forEach((card, i) => {
+          gsap.from(card, {
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+            opacity: 0,
+            scale: 0.88,
+            y: 40,
+            rotateY: i % 2 === 0 ? -3 : 3,
+            duration: 0.8,
+            ease: "power3.out",
+            clearProps: "transform",
+          });
+        });
+      }
+
+      /* Parallax inside each card image */
+      const cardImages = sectionRef.current?.querySelectorAll("[data-work-img]");
+      if (cardImages?.length) {
+        cardImages.forEach((img) => {
+          gsap.to(img, {
+            scrollTrigger: {
+              trigger: img.closest("[data-work-card]"),
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+            y: -30,
+            ease: "none",
+          });
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="work" className="py-24 md:py-32">
+    <section ref={sectionRef} id="work" className="py-24 md:py-32">
       <div className="container-x">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div>
-            <span className="text-xs uppercase tracking-[0.2em] text-lime">Selected work</span>
-            <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl text-balance">
+            <span data-gsap-label className="text-xs uppercase tracking-[0.2em] text-lime">Selected work</span>
+            <h2 data-gsap-heading className="mt-4 font-display text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl text-balance">
               Products people
               <br />
               actually love.
@@ -57,21 +107,20 @@ export function Work() {
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {work.map((w, i) => (
-            <motion.a
+          {work.map((w) => (
+            <a
               href="#"
               key={w.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, delay: i * 0.08 }}
-              className="group relative block overflow-hidden rounded-3xl border border-white/10 bg-surface"
+              data-work-card
+              className="group relative block overflow-hidden rounded-3xl border border-white/10 bg-surface transition-all duration-500 hover:border-lime/20 hover:shadow-lg hover:shadow-lime/5"
+              style={{ perspective: "1000px" }}
             >
-              <div className="relative aspect-[4/3] w-full">
+              <div className="relative aspect-[4/3] w-full overflow-hidden">
                 <Image
                   src={w.img}
                   alt={`${w.title} preview`}
                   fill
+                  data-work-img
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.04]"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   loading="lazy"
@@ -88,11 +137,11 @@ export function Work() {
                   </h3>
                   <p className="mt-2 max-w-sm text-sm text-muted-foreground">{w.desc}</p>
                 </div>
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-lime text-lime-foreground transition-transform group-hover:rotate-45">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-lime text-lime-foreground transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110">
                   <ArrowUpRight className="h-5 w-5" />
                 </span>
               </div>
-            </motion.a>
+            </a>
           ))}
         </div>
       </div>

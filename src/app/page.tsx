@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/site/Navbar";
+import { HomeAnimations } from "@/components/site/HomeAnimations";
 import { Hero } from "@/components/site/Hero";
 import { Marquee } from "@/components/site/Marquee";
 import { Services } from "@/components/site/Services";
@@ -24,15 +25,17 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <Hero />
-      <Marquee />
-      <Services />
-      <Work />
-      <Process />
-      <Testimonials />
-      <FAQ />
-      <CTA />
-      <Footer />
+      <HomeAnimations>
+        <Hero />
+        <Marquee />
+        <Services />
+        <Work />
+        <Process />
+        <Testimonials />
+        <FAQ />
+        <CTA />
+        <Footer />
+      </HomeAnimations>
     </main>
   );
 }
