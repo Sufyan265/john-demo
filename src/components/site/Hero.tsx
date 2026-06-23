@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Particles } from "@/components/ui/particles";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { NumberTicker } from "@/components/ui/number-ticker";
-import { TextScramble } from "@/components/site/TextScramble";
+import { HeroHeadline } from "@/components/site/HeroHeadline";
 
 const heroVisual = {
   image:
@@ -77,10 +77,10 @@ export function Hero() {
         color="#d4ff00"
         size={0.4}
       />
-      <div className="absolute inset-0 grid-bg [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)] z-[1]" />
-      <div className="absolute inset-0 radial-glow z-[1]" />
+      <div className="absolute inset-0 grid-bg mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] z-1" />
+      <div className="absolute inset-0 radial-glow z-1" />
 
-      <div className="container-x relative z-[2]" data-hero-content>
+      <div className="container-x relative z-2" data-hero-content>
         {/* Badge with BorderBeam */}
         <div data-blur-in className="relative inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface/60 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur">
           <span className="h-1.5 w-1.5 rounded-full bg-lime animate-pulse" />
@@ -94,32 +94,10 @@ export function Hero() {
           />
         </div>
 
-        {/* Headline with Text Scramble */}
-        <h1 data-blur-in className="mt-6 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-balance sm:text-6xl md:text-7xl lg:text-[88px]">
-          <TextScramble
-            text="Software, web & mobile"
-            speed={25}
-            delay={400}
-          />
-          <br />
-          <TextScramble
-            text="built for "
-            speed={25}
-            delay={700}
-          />
-          <span className="italic text-lime">
-            <TextScramble
-              text="ambitious"
-              speed={30}
-              delay={900}
-            />
-          </span>
-          <TextScramble
-            text=" brands."
-            speed={25}
-            delay={1000}
-          />
-        </h1>
+        {/* Headline with GSAP entrance and typing loop */}
+        <div data-blur-in>
+          <HeroHeadline />
+        </div>
 
         <p data-blur-in className="mt-7 max-w-2xl text-lg text-muted-foreground md:text-xl">
           We&apos;re John — a product studio of designers and engineers shipping high-craft digital
@@ -184,7 +162,7 @@ export function Hero() {
               className="h-full w-full object-cover object-center"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-background/80 via-background/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-background/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
                 Featured launch
