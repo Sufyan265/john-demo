@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 const links = [
-  { label: "Services", href: "#services" },
+  { label: "Services", href: "/services" },
   { label: "Work", href: "#work" },
   { label: "Process", href: "#process" },
   { label: "About", href: "#about" },
@@ -18,15 +19,15 @@ export function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="container-x">
         <div className="mt-4 flex items-center justify-between rounded-full border border-white/10 bg-background/70 px-4 py-2.5 backdrop-blur-xl md:px-6">
-          <a href="#top" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <span className="grid h-8 w-8 place-items-center rounded-full bg-lime text-lime-foreground font-display font-bold">J</span>
             <span className="font-display text-lg font-semibold tracking-tight">John<span className="text-lime">.</span></span>
-          </a>
+          </Link>
           <nav className="hidden items-center gap-7 md:flex">
             {links.map((l) => (
-              <a key={l.href} href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+              <Link key={l.href} href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
                 {l.label}
-              </a>
+              </Link>
             ))}
           </nav>
           <a href="#contact" className="hidden items-center gap-1.5 rounded-full bg-lime px-4 py-2 text-sm font-semibold text-lime-foreground transition-transform hover:scale-[1.03] md:inline-flex">
