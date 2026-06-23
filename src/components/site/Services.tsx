@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { Code2, Smartphone, Palette, Cloud, Brain, LineChart, ArrowUpRight } from "lucide-react";
 

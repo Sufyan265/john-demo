@@ -1,5 +1,8 @@
+"use client";
+
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 
 const work = [
   {
@@ -65,10 +68,12 @@ export function Work() {
               className="group relative block overflow-hidden rounded-3xl border border-white/10 bg-surface"
             >
               <div className="relative aspect-[4/3] w-full">
-                <img
+                <Image
                   src={w.img}
                   alt={`${w.title} preview`}
-                  className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.04]"
+                  fill
+                  className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.04]"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/35 to-transparent" />

@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 
@@ -12,9 +14,9 @@ export function CTA() {
         >
           <div className="absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-black/10 blur-3xl" />
           <div className="relative">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] opacity-70">Let's talk</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] opacity-70">Let&apos;s talk</span>
             <h2 className="mt-4 font-display text-5xl font-semibold leading-[1] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl text-balance">
-              Have an idea?<br />Let's build it.
+              Have an idea?<br />Let&apos;s build it.
             </h2>
             <p className="mt-6 max-w-xl text-lg opacity-80">
               Tell us about your project. We reply within one business day with

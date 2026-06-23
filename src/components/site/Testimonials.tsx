@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -46,9 +48,9 @@ export function Testimonials() {
               className="flex flex-col justify-between rounded-3xl border border-white/10 bg-surface p-8"
             >
               <blockquote className="font-display text-xl leading-snug tracking-tight text-balance">
-                <span className="text-lime">"</span>
+                <span className="text-lime">&ldquo;</span>
                 {q.quote}
-                <span className="text-lime">"</span>
+                <span className="text-lime">&rdquo;</span>
               </blockquote>
               <figcaption className="mt-8 flex items-center gap-3">
                 <Avatar className="h-10 w-10 border border-white/10">

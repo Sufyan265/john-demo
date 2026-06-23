@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import type { Metadata } from "next";
 import { Navbar } from "@/components/site/Navbar";
 import { Hero } from "@/components/site/Hero";
 import { Marquee } from "@/components/site/Marquee";
@@ -9,19 +9,18 @@ import { Testimonials } from "@/components/site/Testimonials";
 import { FAQ } from "@/components/site/FAQ";
 import { CTA, Footer } from "@/components/site/CTA";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "John — Software, Web & Mobile Development Studio" },
-      { name: "description", content: "John is a premium product studio of senior designers and engineers building software, web and mobile experiences for ambitious brands." },
-      { property: "og:title", content: "John — Premium Product Studio" },
-      { property: "og:description", content: "We design and engineer software, web and mobile products that scale." },
-    ],
-  }),
-  component: Index,
-});
+export const metadata: Metadata = {
+  title: "John — Software, Web & Mobile Development Studio",
+  description:
+    "John is a premium product studio of senior designers and engineers building software, web and mobile experiences for ambitious brands.",
+  openGraph: {
+    title: "John — Premium Product Studio",
+    description:
+      "We design and engineer software, web and mobile products that scale.",
+  },
+};
 
-function Index() {
+export default function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Navbar />

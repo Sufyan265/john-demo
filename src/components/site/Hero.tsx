@@ -1,5 +1,8 @@
+"use client";
+
 import { motion } from "motion/react";
 import { ArrowUpRight, Star } from "lucide-react";
+import Image from "next/image";
 
 const heroVisual = {
   image:
@@ -40,7 +43,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="mt-7 max-w-2xl text-lg text-muted-foreground md:text-xl"
         >
-          We're John — a product studio of designers and engineers shipping high-craft digital
+          We&apos;re John — a product studio of designers and engineers shipping high-craft digital
           products for venture-backed startups and global brands.
         </motion.p>
 
@@ -96,11 +99,13 @@ export function Hero() {
           </div>
 
           <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-surface/70 shadow-2xl shadow-lime/5">
-            <img
+            <Image
               src={heroVisual.image}
               alt={heroVisual.alt}
+              width={1400}
+              height={900}
               className="h-full w-full object-cover object-center"
-              loading="eager"
+              priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">

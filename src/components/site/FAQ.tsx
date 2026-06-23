@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Plus } from "lucide-react";
@@ -21,7 +23,7 @@ export function FAQ() {
             Questions, answered.
           </h2>
           <p className="mt-5 text-muted-foreground">
-            Can't find what you're looking for? <a href="#contact" className="text-lime underline-offset-4 hover:underline">Ask us directly</a>.
+            Can&apos;t find what you&apos;re looking for? <a href="#contact" className="text-lime underline-offset-4 hover:underline">Ask us directly</a>.
           </p>
         </div>
 
